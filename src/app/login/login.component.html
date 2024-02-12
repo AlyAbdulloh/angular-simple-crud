@@ -1,10 +1,19 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div class="container d-flex justify-content-center align-items-center mt-5">
     <div class="form-box shadow p-3 mb-5 bg-body rounded p-5">
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="row">
-                <input type="text" class="form-control col-12" placeholder="username" required formControlName="username"> 
-                <input type="password" class="form-control mt-4 col-12" placeholder="password" required formControlName="password">
+                <div class="input-group">
+                    <input type="text" class="form-control col-12" placeholder="username" required formControlName="username"> 
+                </div>
+                <div class="input-group pwd">
+                    <input [type]="password" class="form-control mt-4 col-12 input-pwd" placeholder="password" required formControlName="password" [ngClass]="{'is-valid': isValid, 'is-invalid': !isValid}">
+                    <button (click)="onClick()" class="show-hide">
+                        <i class="fa fa-eye" aria-hidden="true" *ngIf="!show"></i>
+                        <i class="fa fa-eye-slash" aria-hidden="true" *ngIf="show"></i>
+                    </button>
+                </div>
                 <div class="button col-12 mt-4 text-center">
                     <button type="submit" class="btn btn-primary rounded-pill" style="width: 150px;">Submit</button> 
                 </div>

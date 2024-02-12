@@ -7,3 +7,20 @@
 .container{
     height: 82vh;
 }
+
+.pwd{
+    position: relative;
+}
+
+/* .input-pwd{
+    position: relative;
+} */
+
+.show-hide{
+    border: none;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 85%;
+    z-index: 100;
+}

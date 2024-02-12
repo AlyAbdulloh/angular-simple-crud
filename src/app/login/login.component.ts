@@ -11,6 +11,9 @@ import Swal from 'sweetalert2'
 })
 export class LoginComponent implements OnInit{
   loginForm!: FormGroup;
+  password!: string;
+  show: boolean = false;
+  isValid: boolean = true;
 
   constructor(private http:HttpClient, private router:Router, private fb: FormBuilder){}
 
@@ -19,6 +22,8 @@ export class LoginComponent implements OnInit{
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
     })
+
+    this.password = 'password';
   }
 
   onSubmit(){
@@ -47,6 +52,16 @@ export class LoginComponent implements OnInit{
       }) 
     }else{
       console.log('false');
+    }
+  }
+
+  onClick() {
+    if (this.password === 'password') {
+      this.password = 'text';
+      this.show = true;
+    } else {
+      this.password = 'password';
+      this.show = false;
     }
   }
 }
