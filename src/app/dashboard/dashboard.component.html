@@ -5,7 +5,7 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between">
         <!-- <button class="btn btn-primary mb-3 mt-3">Add user</button> -->
-        <app-modal></app-modal>
+        <app-modal [mode] = "'insert'"></app-modal>
         <div>
             <form class="d-flex mt-3" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" (keyup)="search($event)">
@@ -23,15 +23,20 @@
                 <th width="200px">Action</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="isNotEmpty">
             <tr *ngFor="let user of users let i = index" class="text-center">
                 <td>{{ i + 1 }}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.role }}</td>
-                <td class="text-center"><button class="btn btn-warning me-3">Edit</button>
-                <button class="btn btn-danger" (click)="deleteUser(user.id)">Delete</button></td>
+                <td class="text-center">
+                    <app-modal [mode] = "'update'" [id]="user.id" [userData]="user"></app-modal>
+                    <button class="btn btn-danger" (click)="deleteUser(user.id)">Delete</button>
+                </td>
             </tr>
         </tbody>
     </table>
+    <div *ngIf="isEmpty" class="container text-center">
+        <h1>Not found</h1>
+    </div>
 </div>

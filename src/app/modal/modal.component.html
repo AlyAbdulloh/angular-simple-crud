@@ -1,38 +1,58 @@
-<ng-template #content let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Add User</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-	</div>
-	<div class="modal-body">
-		<form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm.value)">
-			<div class="mb-3">
-				<div class="input-group">
-                    <input type="text" class="form-control" required placeholder="username" formControlName="username">
-                    <div class="invalid-feedback">
-                        test
-                    </div>
+<div *ngIf="mode === 'insert'">
+	<!-- Tampilan untuk mode insert -->
+	<ng-template #content let-modal>
+		<div class="modal-header">
+			<h4 class="modal-title" id="modal-basic-title">Add User</h4>
+			<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+		</div>
+		<div class="modal-body">
+			<form [formGroup]="userForm" (ngSubmit)="saveData(userForm.value)">
+				<div class="mb-3">
+					<div class="input-group">
+						<input type="text" class="form-control" required placeholder="username" formControlName="username">
+					</div>
+	
+					<div class="input-group mt-3">
+						<input type="email" class="form-control" required placeholder="email" formControlName="email">
+					</div>
+					<div class="input-group mt-3">
+						<input type="password" class="form-control" placeholder="password" required formControlName="password">
+					</div>
+					<!-- <div class="input-group mt-2">
+						<input type="text" id="username" name="username" class="form-control">
+					</div> -->
 				</div>
-
-				<div class="input-group mt-2">
-                    <input type="email" class="form-control" required placeholder="email" formControlName="email">
-                    <div class="invalid-feedback">
-                        test
-                    </div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-outline-dark">Save</button>
 				</div>
-				<div class="input-group mt-2">
-                    <input type="password" class="form-control" placeholder="password" required formControlName="password">
-                    <div class="invalid-feedback">
-                        test
-                    </div>
+			</form>
+		</div>
+	</ng-template>
+	<button class="btn btn-primary mb-3 mt-3" (click)="open(content)">Add user</button>
+  </div>
+<div *ngIf="mode === 'update'">
+	<!-- Tampilan untuk mode update -->
+	<ng-template #content let-modal>
+		<div class="modal-header">
+			<h4 class="modal-title" id="modal-basic-title">Update</h4>
+			<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+		</div>
+		<div class="modal-body">
+			<form [formGroup]="userForm" (ngSubmit)="saveData(userForm.value)">
+				<div class="mb-3">
+					<div class="input-group">
+						<input type="text" class="form-control" required placeholder="username" formControlName="username">
+					</div>
+	
+					<div class="input-group mt-3">
+						<input type="email" class="form-control" required placeholder="email" formControlName="email">
+					</div>
 				</div>
-				<!-- <div class="input-group mt-2">
-                    <input type="text" id="username" name="username" class="form-control">
-				</div> -->
-			</div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-outline-dark">Save</button>
-            </div>
-		</form>
-	</div>
-</ng-template>
-<button class="btn btn-primary mb-3 mt-3" (click)="open(content)">Add user</button>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-outline-dark">Save</button>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+	<button class="btn btn-primary mb-3 mt-3" (click)="open(content)">Update</button>
+</div>

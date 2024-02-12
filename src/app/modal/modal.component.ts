@@ -1,8 +1,9 @@
-import { Component, inject, TemplateRef, OnInit } from '@angular/core';
+import { Component, inject, TemplateRef, OnInit, Host, Input } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient} from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-modal',
@@ -12,8 +13,16 @@ import { Router } from '@angular/router';
 export class ModalComponent implements OnInit{
   userForm!: FormGroup;
   test: string = 'is-invalid';
+  parent: DashboardComponent;
+  user: any = {};
 
-  constructor(private http: HttpClient, private fb: FormBuilder, private router: Router){}
+  @Input() mode!: 'insert' | 'update';
+  @Input() id: any;
+  @Input() userData: any;
+
+  constructor(private http: HttpClient, private fb: FormBuilder, private router: Router, @Host() parent: DashboardComponent){
+    this.parent = parent;
+  }
   private modalService = inject(NgbModal);
 	closeResult = '';
 
@@ -26,6 +35,13 @@ export class ModalComponent implements OnInit{
 				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
 			},
 		);
+
+    if(this.mode == 'update'){
+      this.userForm = this.fb.group({
+        username: [this.userData.username, [Validators.required]],
+        email: [this.userData.email, Validators.compose([Validators.required, Validators.email])],
+      });
+    }
 	}
 
   private getDismissReason(reason: any): string {
@@ -40,23 +56,35 @@ export class ModalComponent implements OnInit{
 	}
 
   ngOnInit(){
-    this.userForm = this.fb.group({
-      username: ['', [Validators.required]],
-      email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', [Validators.required]]
-    });
+    if(this.mode === 'insert'){
+      this.userForm = this.fb.group({
+        username: ['', [Validators.required]],
+        email: ['', Validators.compose([Validators.required, Validators.email])],
+        password: ['', [Validators.compose([Validators.required, Validators.minLength(5)])]]
+      });
+    }else if(this.mode === 'update'){
+      this.userForm = this.fb.group({
+        username: ['', [Validators.compose([Validators.minLength(5)])]],
+        email: ['', Validators.compose([Validators.required, Validators.email])],
+      });
+    }
   }
 
-
-  onSubmit(userData: any) {
-    if(this.userForm.valid){
-      this.http.post('http://localhost:3000/user/', userData).subscribe(response => {
+  saveData(userData: any){
+    if(this.mode === 'insert'){
+      if(this.userForm.valid){
         this.modalService.dismissAll();
-      }), (error: any) => {
-        console.log(error);
+        this.parent.addUser(userData);
+      } else{
+        console.log("is-invalid");
       }
-    }else{
-      console.log(this.userForm.controls);
+    }else if(this.mode === 'update'){
+      if(this.userForm.valid){
+        this.modalService.dismissAll();
+        this.parent.updateUser(userData, this.id);
+      }else{
+        console.log("is-invalid");
+      }
     }
   }
 }
