@@ -4,6 +4,7 @@ import { HttpClient} from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { UserService } from '../services/user.service';  
 
 @Component({
   selector: 'app-modal',
@@ -20,7 +21,7 @@ export class ModalComponent implements OnInit{
   @Input() id: any;
   @Input() userData: any;
 
-  constructor(private http: HttpClient, private fb: FormBuilder, private router: Router, @Host() parent: DashboardComponent){
+  constructor(private http: HttpClient, private fb: FormBuilder, private router: Router, @Host() parent: DashboardComponent, private userService: UserService){
     this.parent = parent;
   }
   private modalService = inject(NgbModal);
@@ -70,18 +71,35 @@ export class ModalComponent implements OnInit{
     }
   }
 
+  addUser(userData: any): void{
+    this.userService.addUser(userData).subscribe(() => {
+      this.parent.getUsers();
+    },
+    (error: any) => {
+      console.log(error);
+    });
+  }
+
+  updateUser(userData: any, id: number): void{
+    this.userService.updateUser(userData, id).subscribe(() => {
+      this.parent.getUsers();
+    }, (error: any) => {
+      console.log(error);
+    })
+  }
+
   saveData(userData: any){
     if(this.mode === 'insert'){
       if(this.userForm.valid){
         this.modalService.dismissAll();
-        this.parent.addUser(userData);
+        this.addUser(userData);
       } else{
         console.log("is-invalid");
       }
     }else if(this.mode === 'update'){
       if(this.userForm.valid){
         this.modalService.dismissAll();
-        this.parent.updateUser(userData, this.id);
+        this.updateUser(userData, this.id);
       }else{
         console.log("is-invalid");
       }

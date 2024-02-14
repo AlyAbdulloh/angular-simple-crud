@@ -3,6 +3,8 @@ import { HttpClient} from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import Swal from 'sweetalert2'
 import { Observable } from 'rxjs';
+import { User } from '../user.interfaces';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,29 +14,21 @@ import { Observable } from 'rxjs';
 export class DashboardComponent implements OnInit{
   // registrationForm: FormGroup;
 
-  constructor(private http: HttpClient){}
-  users: any= [];
-  test: any;
-  body: any = {
-    "username": "Achmad",
-    "email": "aly@gmail.com",
-    "password": "password",
-  }
-  dataUser: any = {};
+  constructor(private http: HttpClient, private userService:UserService){}
+  users: User[] = [];
   isEmpty: boolean = false;
-  isNotEmpty: boolean = true;
 
-
-
-  // registrationForm: FormGroup;
+  getUsers(): void{
+    this.userService.getUsers().subscribe((response) => {
+      this.users = response;
+    },
+    (error: any) => {
+      console.log(error);
+    });
+  }
 
   ngOnInit(){
-      //call http
-      this.http.get('http://localhost:3000/user/').subscribe(response => {
-        this.users = response;
-      }), (error: any) => {
-        console.log(error);
-      }
+      this.getUsers();
   }
 
   deleteUser(id: any){
@@ -48,11 +42,9 @@ export class DashboardComponent implements OnInit{
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.http.delete(`http://localhost:3000/user/${id}`).subscribe(response => {
-          this.ngOnInit();
-        }), (error: any) => {
-          console.log(error);
-        }
+        this.userService.deleteUser(id).subscribe(() => {
+          this.getUsers();
+        });
         Swal.fire({
           title: "Deleted!",
           text: "has been deleted.",
@@ -63,49 +55,17 @@ export class DashboardComponent implements OnInit{
   }
 
   search(x: any){
-    // console.log(x.target.value);
     if(x.target.value == ''){
       this.ngOnInit();
     }else{
-      this.http.get(`http://localhost:3000/user/search/${x.target.value}`).subscribe(response => {
+      this.userService.search(x.target.value).subscribe(response => {
         this.users = response;
         this.isEmpty = false;
-        this.isNotEmpty = true;
       }, (error: any) => {
         if(error.status == 404){
           this.isEmpty = true;
-          this.isNotEmpty = false;
-
         }
       })
     }
-  }
-
-  addUser(userData: any) {
-    this.http.post('http://localhost:3000/user/', userData).subscribe(response => {
-      Swal.fire({
-        title: "Data was inserted",
-        text: "You clicked the button!",
-        icon: "success"
-      });
-      this.ngOnInit();
-    }, 
-    (error: any) => {
-      console.log(error);
-    }) 
-  }
-
-  updateUser(userData: any, id: any){
-    this.http.put(`http://localhost:3000/user/${id}`, userData).subscribe(response => {
-      Swal.fire({
-        title: "Data was updated",
-        text: "You clicked the button!",
-        icon: "success"
-      });
-      this.ngOnInit();
-    },
-    (error: any) => {
-      console.log(error);
-    })
   }
 }

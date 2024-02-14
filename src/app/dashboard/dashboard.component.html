@@ -19,7 +19,7 @@
                 <th width="200px">Action</th>
             </tr>
         </thead>
-        <tbody *ngIf="isNotEmpty">
+        <tbody *ngIf="!isEmpty">
             <tr *ngFor="let user of users let i = index" class="text-center">
                 <td>{{ i + 1 }}</td>
                 <td>{{ user.username }}</td>
