@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app.routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './header/header.component';
 
 // jwt
 import { JwtModule } from '@auth0/angular-jwt';
@@ -22,7 +23,8 @@ import { JwtModule } from '@auth0/angular-jwt';
     ItemListComponent,
     DashboardComponent,
     ModalComponent,
-    LoginComponent
+    LoginComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

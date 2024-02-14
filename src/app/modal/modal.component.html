@@ -28,8 +28,8 @@
 			</form>
 		</div>
 	</ng-template>
-	<button class="btn btn-primary mb-3 mt-3" (click)="open(content)">Add user</button>
-  </div>
+	<button class="btn btn-primary mb-3 mt-3 add-user" (click)="open(content)">Add user</button>
+</div>
 <div *ngIf="mode === 'update'">
 	<!-- Tampilan untuk mode update -->
 	<ng-template #content let-modal>
@@ -54,5 +54,5 @@
 			</form>
 		</div>
 	</ng-template>
-	<button class="btn btn-primary mb-3 mt-3" (click)="open(content)">Update</button>
+	<button class="btn btn-warning" (click)="open(content)">Update</button>
 </div>

@@ -1,10 +1,11 @@
+<app-header></app-header>
 <div class="container mt-5">
     <div class="d-flex justify-content-between">
         <app-modal [mode] = "'insert'"></app-modal>
         <div>
             <form class="d-flex mt-3" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" (keyup)="search($event)">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
             </form>
         </div>
     </div>
@@ -24,9 +25,9 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.role }}</td>
-                <td class="text-center">
+                <td class="d-flex flex-row justify-content-center">
                     <app-modal [mode] = "'update'" [id]="user.id" [userData]="user"></app-modal>
-                    <button class="btn btn-danger" (click)="deleteUser(user.id)">Delete</button>
+                    <button class="btn btn-danger mx-3" (click)="deleteUser(user.id)">Delete</button>
                 </td>
             </tr>
         </tbody>
