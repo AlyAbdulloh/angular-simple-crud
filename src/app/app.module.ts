@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './header/header.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 // jwt
 import { JwtModule } from '@auth0/angular-jwt';
@@ -20,11 +21,12 @@ import { JwtModule } from '@auth0/angular-jwt';
 @NgModule({
   declarations: [
     AppComponent,
-    ItemListComponent,
     DashboardComponent,
     ModalComponent,
     LoginComponent,
-    HeaderComponent
+    HeaderComponent,
+    ItemListComponent,
+    UserListComponent,
   ],
   imports: [
     BrowserModule,
