@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2'
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit{
   show: boolean = false;
   isValid: boolean = true;
 
-  constructor(private http:HttpClient, private router:Router, private fb: FormBuilder){}
+  constructor(private http:HttpClient, private router:Router, private fb: FormBuilder, private authServices: AuthService){}
 
   ngOnInit(){
     this.loginForm = this.fb.group({
@@ -28,32 +28,13 @@ export class LoginComponent implements OnInit{
 
   onSubmit(){
     if(this.loginForm.valid){
-      this.http.post('http://localhost:3000/auth/login',this.loginForm.value).subscribe((response: any) => {
-        localStorage.setItem('accessToken', response.accessToken);
-        Swal.fire({
-          title: "Login Berhasil",
-          text: "klik button ini",
-          icon: "success",
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "OK"
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigate(['dashboard']);
-          }
-        });
-      },(error: any) => {
-        if(error.status === 401){
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Invalid Credentials",
-          });
-        }
-      }) 
+      this.authServices.login(this.loginForm.value);
     }else{
       console.log('false');
     }
   }
+
+
 
   showHide() {
     if (this.password === 'password') {
