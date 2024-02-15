@@ -6,17 +6,16 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
-
+export class GuestGuard implements CanActivate {
   constructor(private router: Router, private authServices: AuthService){}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const canAccess = this.authServices.isAuthenticated();
-    
-    if(!canAccess){
-      this.router.navigate(['']);
+    const isLoggedIn = this.authServices.isAuthenticated();
+
+    if(isLoggedIn){
+      this.router.navigate(['dashboard']);
       return false;
     }
     return true;
