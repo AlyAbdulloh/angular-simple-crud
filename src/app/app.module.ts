@@ -12,11 +12,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './header/header.component';
 import { UserListComponent } from './user-list/user-list.component';
+import { FormComponent } from './form/form.component';
 
 // jwt
 import { JwtModule } from '@auth0/angular-jwt';
-
-
 
 @NgModule({
   declarations: [
@@ -27,6 +26,7 @@ import { JwtModule } from '@auth0/angular-jwt';
     HeaderComponent,
     ItemListComponent,
     UserListComponent,
+    FormComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,16 +39,16 @@ import { JwtModule } from '@auth0/angular-jwt';
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["localhost:3000"],
+        allowedDomains: ['localhost:3000'],
       },
     }),
     // ModalDismissReasons
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 
 export function tokenGetter() {
-  return localStorage.getItem("accessToken");
+  return localStorage.getItem('accessToken');
 }

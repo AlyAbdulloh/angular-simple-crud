@@ -1,37 +1,51 @@
 <app-header></app-header>
 <div class="container mt-5">
-    <div class="d-flex justify-content-between">
-        <app-modal [mode] = "'insert'"></app-modal>
-        <div>
-            <form class="d-flex mt-3" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" (keyup)="search($event)">
-            </form>
-        </div>
+  <div class="d-flex justify-content-between">
+    <app-modal [mode]="'insert'"></app-modal>
+    <div>
+      <form class="d-flex mt-3" role="search">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+          (keyup)="search($event)"
+        />
+      </form>
     </div>
-    <table class="table table-striped table-bordered">
-        <thead>
-            <tr class="text-center">
-                <th width="80px">#</th>
-                <th width="250px">username</th>
-                <th width="250px">Email</th>
-                <th width="150px">Role</th>
-                <th width="200px">Action</th>
-            </tr>
-        </thead>
-        <tbody *ngIf="!isEmpty">
-            <tr *ngFor="let user of users let i = index" class="text-center">
-                <td>{{ i + 1 }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.role }}</td>
-                <td class="d-flex flex-row justify-content-center">
-                    <app-modal [mode] = "'update'" [id]="user.id" [userData]="user"></app-modal>
-                    <button class="btn btn-danger mx-3" (click)="deleteUser(user.id)">Delete</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div *ngIf="isEmpty" class="container text-center">
-        <h1>Not found</h1>
-    </div>
+  </div>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr class="text-center">
+        <th width="80px">#</th>
+        <th width="250px">username</th>
+        <th width="250px">Email</th>
+        <th width="150px">Role</th>
+        <th width="200px">Action</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="!isEmpty">
+      <tr *ngFor="let user of users; let i = index" class="text-center">
+        <td>{{ i + 1 }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td class="d-flex flex-row justify-content-center">
+          <app-modal
+            [mode]="'update'"
+            [id]="user.id"
+            [userData]="user"
+          ></app-modal>
+          <button class="btn btn-danger mx-3" (click)="deleteUser(user.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="isEmpty" class="container text-center">
+    <h1>Not found</h1>
+  </div>
+  <!-- <button class="btn btn-success" (click)="goToForm()">got to form</button> -->
+  <a [routerLink]="['/form', 123, 2]" class="btn btn-primary">Go To Form</a>
 </div>

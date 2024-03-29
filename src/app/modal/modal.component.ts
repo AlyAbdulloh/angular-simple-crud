@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 
 import { UserService } from '../services/user.service';  
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modal',
@@ -74,6 +75,7 @@ export class ModalComponent implements OnInit{
 
   addUser(userData: any): void{
     this.userService.addUser(userData).subscribe(() => {
+
       this.parent.getUsers();
     },
     (error: any) => {
@@ -101,6 +103,17 @@ export class ModalComponent implements OnInit{
       if(this.userForm.valid){
         this.modalService.dismissAll();
         this.updateUser(userData, this.id);
+        Swal.fire({
+          title: "Update Successfully",
+          text: "klik button ini",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "OK"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['dashboard']);
+          }
+        });
       }else{
         console.log("is-invalid");
       }

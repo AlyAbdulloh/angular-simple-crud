@@ -1,71 +1,89 @@
 import { Component, Host, OnInit } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
-import Swal from 'sweetalert2'
+import { HttpClient } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { User } from '../user.interfaces';
 import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
+import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
   // registrationForm: FormGroup;
 
-  constructor(private http: HttpClient, private userService:UserService){}
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+    private router: Router
+  ) {}
   users: User[] = [];
   isEmpty: boolean = false;
 
-  getUsers(): void{
-    this.userService.getUsers().subscribe((response) => {
-      this.users = response;
-    },
-    (error: any) => {
-      console.log(error);
-    });
+  getUsers(): void {
+    this.userService.getUsers().subscribe(
+      (response) => {
+        this.users = response;
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
-  ngOnInit(){
-      this.getUsers();
+  ngOnInit() {
+    this.getUsers();
   }
 
-  deleteUser(id: any){
+  deleteUser(id: any) {
     Swal.fire({
-      title: "Are you sure?",
+      title: 'Are you sure?',
       text: "You won't be able to revert this!",
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.userService.deleteUser(id).subscribe(() => {
           this.getUsers();
         });
         Swal.fire({
-          title: "Deleted!",
-          text: "has been deleted.",
-          icon: "success"
+          title: 'Deleted!',
+          text: 'has been deleted.',
+          icon: 'success',
         });
       }
     });
   }
 
-  search(x: any){
-    if(x.target.value == ''){
+  search(x: any) {
+    if (x.target.value == '') {
       this.ngOnInit();
-    }else{
-      this.userService.search(x.target.value).subscribe(response => {
-        this.users = response;
-        this.isEmpty = false;
-      }, (error: any) => {
-        if(error.status == 404){
-          this.isEmpty = true;
+    } else {
+      this.userService.search(x.target.value).subscribe(
+        (response) => {
+          this.users = response;
+          this.isEmpty = false;
+        },
+        (error: any) => {
+          if (error.status == 404) {
+            this.isEmpty = true;
+          }
         }
-      })
+      );
     }
   }
+
+  // goToForm() {
+  //   this.router.navigate(['/form'], {
+  //     queryParams: { nik: '123', event: '1' },
+  //   });
+  //   // console.log('test');
+  // }
 }
