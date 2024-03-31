@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -45,7 +45,11 @@ export class FormComponent implements OnInit {
   ];
 
   response: string = '';
-  constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private el: ElementRef
+  ) {}
 
   ngOnInit(): void {
     // this.createForm();
@@ -75,9 +79,14 @@ export class FormComponent implements OnInit {
   }
 
   change(id: any) {
+    let myTag = this.el.nativeElement.querySelector('.response');
+    console.log(myTag);
+    if (!myTag.classList.contains('show')) {
+      myTag.classList.add('show');
+    }
     this.response = this.image[id - 1].img;
     setTimeout(() => {
-      this.response = '';
+      myTag.classList.remove('show');
     }, 1500);
   }
 
