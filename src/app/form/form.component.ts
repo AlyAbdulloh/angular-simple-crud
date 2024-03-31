@@ -80,14 +80,13 @@ export class FormComponent implements OnInit {
 
   change(id: any) {
     let myTag = this.el.nativeElement.querySelector('.response');
-    console.log(myTag);
     if (!myTag.classList.contains('show')) {
       myTag.classList.add('show');
     }
     this.response = this.image[id - 1].img;
     setTimeout(() => {
       myTag.classList.remove('show');
-    }, 1500);
+    }, 3000);
   }
 
   saveData() {
